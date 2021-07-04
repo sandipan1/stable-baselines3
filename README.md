@@ -98,7 +98,7 @@ pip install stable-baselines3[extra]
 
 This includes an optional dependencies like Tensorboard, OpenCV or `atari-py` to train on atari games. If you do not need those, you can use:
 ```
-pip install stable-baselines3
+pip install -e .
 ```
 
 Please read the [documentation](https://stable-baselines3.readthedocs.io/) for more details and alternatives (from source, using docker).
