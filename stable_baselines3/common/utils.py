@@ -4,10 +4,11 @@ import random
 from collections import deque
 from itertools import zip_longest
 from typing import Dict, Iterable, Optional, Union
-
 import gym
 import numpy as np
 import torch as th
+import torch.nn as nn
+
 
 # Check if tensorboard is available for pytorch
 try:
@@ -461,3 +462,18 @@ def should_collect_more_steps(
             "The unit of the `train_freq` must be either TrainFrequencyUnit.STEP "
             f"or TrainFrequencyUnit.EPISODE not '{train_freq.unit}'!"
         )
+
+
+
+
+def weight_init(m):
+    """Custom weight init for Conv2D and Linear layers."""
+    if isinstance(m, nn.Linear):
+        nn.init.orthogonal_(m.weight.data)
+        if hasattr(m.bias, 'data'):
+            m.bias.data.fill_(0.0)
+    elif isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
+        gain = nn.init.calculate_gain('relu')
+        nn.init.orthogonal_(m.weight.data, gain)
+        if hasattr(m.bias, 'data'):
+            m.bias.data.fill_(0.0)
