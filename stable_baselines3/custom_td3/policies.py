@@ -1,4 +1,4 @@
-import utils
+from stable_baselines3.common import utils
 
 import gym
 import numpy as np

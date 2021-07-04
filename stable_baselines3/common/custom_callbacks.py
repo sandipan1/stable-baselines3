@@ -129,7 +129,19 @@ class EvalCallback(BaseCallback):
         # Evaluate the agent:
         # you need to do self.n_eval_episodes loop using self.eval_env
         # hint: you can use self.model.predict(obs, deterministic=True)
-            mean_reward, std_reward = evaluate_policy(self.model, self.eval_env, n_eval_episodes=self.n_eval_episodes)
+            # mean_reward, std_reward = evaluate_policy(self.model, self.eval_env, n_eval_episodes=self.n_eval_episodes)
+            episode_rewards = [] 
+            for i in range(self.n_eval_episodes):
+                episode_reward=0
+                obs= self.eval_env.reset()
+                while not done:
+                    action, _states = self.model.predict(obs)
+                    obs, reward, done, info = self.eval_env.step(action)
+                    episode_reward += reward
+                    episode_rewards.append(episode_reward)
+            episode_rewards = np.array(episode_rewards)
+            mean_reward, std_reward = np.mean(episode_rewards), np.std(episode_rewards)
+
         
             if self.verbose > 0:
                 print(f"Eval num_timesteps={self.num_timesteps}, " f"episode_reward={mean_reward:.2f} +/- {std_reward:.2f}")
@@ -137,8 +149,8 @@ class EvalCallback(BaseCallback):
             self.logger.record("eval/mean_reward", mean_reward)
             self.model.save(self.save_latest_model)
 
-            self.logger.record("time/total timesteps", self.num_timesteps, exclude="tensorboard")
-            self.logger.dump(self.num_timesteps)
+            # self.logger.record("time/total timesteps", self.num_timesteps, exclude="tensorboard")
+            # self.logger.dump(self.num_timesteps)
         # and update self.best_mean_reward
             if mean_reward > self.best_mean_reward:
                 self.best_mean_reward = mean_reward

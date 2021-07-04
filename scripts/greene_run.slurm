@@ -4,8 +4,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
-#SBATCH --time=5:00:00
-#SBATCH --mem=64GB
+#SBATCH --time=6:00:00
+#SBATCH --mem=80GB
 #SBATCH --mail-type=END
 #SBATCH --gres=gpu
 #SBATCH --array=0
@@ -14,4 +14,4 @@
 #SBATCH --export=ALL
 
 bash /scratch/sh6317/research/run-singularity.sh \
-    config_script.sh
+    /scratch/sh6317/research/stable-baselines3/scripts/config_script.sh

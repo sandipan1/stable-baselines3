@@ -65,7 +65,7 @@ def train(env,work_dir):
 
     print(model)
     eval_callback = EvalCallback(eval_env=env,n_eval_episodes=5,eval_freq=5000, model_dir=model_dir)
-    total_timesteps = 200001
+    total_timesteps = 100001
     with ProgressBarManager(total_timesteps) as progress_callback: # this the garanties th,at the tqdm progress bar closes correctly
         # model.learn(2000, callback=callback), 
         model.learn(total_timesteps=total_timesteps, log_interval=1000, callback=[eval_callback,progress_callback])
@@ -113,8 +113,9 @@ if __name__ == '__main__':
     env = make_sb3_point_env(seed=0)
 
     global_dir = os.path.abspath(os.getcwd() + "/../")
-    work_dir = os.path.join(global_dir,"data/point_mass")
+    work_dir = os.path.join(global_dir,"data/point_mass3")
 
     directory = MAKETREEDIR()
     directory.makedir(work_dir)
+    print(os.getenv('SLURM_JOB_ID'))
     train(env, work_dir=work_dir)

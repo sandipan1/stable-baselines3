@@ -127,8 +127,8 @@ class Reach_PointMass(ReachNav):
             
             'achieved_goal' : self.get_body_com("torso")[:2],
             'desired_goal' : self.target,
-            'image_observation': self.get_image(),
-            'desire_goal_image': self.get_goal_image()
+            'image_observation': self.get_image().transpose(2,0,1),
+            'desired_goal_image': self.get_goal_image().transpose(2,0,1)
             
             
         }
